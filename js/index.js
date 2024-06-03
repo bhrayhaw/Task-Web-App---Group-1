@@ -1,3 +1,6 @@
+// Initialize a new instance of TaskManager
+const taskManager = new TaskManager();
+
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.querySelector("#taskForm");
   const addCategoryBtn = document.querySelector("#addCategoryBtn");
@@ -16,6 +19,14 @@ document.addEventListener("DOMContentLoaded", () => {
     const taskDueDate = document.querySelector("#newTaskDueDateInput").value;
     const taskStatus = document.querySelector("#newTaskStatusInput").value;
 
+    // console.log("Form Submitted:", {
+    //   taskName,
+    //   taskDescription,
+    //   taskAssignedTo,
+    //   taskDueDate,
+    //   taskStatus,
+    // });
+
     if (
       validFormFieldInput({
         taskName,
@@ -25,6 +36,7 @@ document.addEventListener("DOMContentLoaded", () => {
         taskStatus,
       })
     ) {
+      // console.log("Valid Input, Adding Task");
       addTaskToBoard(
         taskName,
         taskDescription,
@@ -32,7 +44,17 @@ document.addEventListener("DOMContentLoaded", () => {
         taskDueDate,
         taskStatus
       );
+      taskManager.addTask(
+        taskName,
+        taskDescription,
+        taskAssignedTo,
+        taskDueDate,
+        taskStatus
+      );
+      console.log("Current Tasks:", taskManager.tasks);
       form.reset();
+    } else {
+      console.log("Invalid Input");
     }
   });
 
@@ -108,7 +130,11 @@ function addTaskToBoard(
   taskItem.dataset.status = taskStatus;
 
   const categoryColumn = document.querySelector(`#${taskStatus} ul`);
-  categoryColumn.appendChild(taskItem);
+  if (categoryColumn) {
+    categoryColumn.appendChild(taskItem);
+  } else {
+    console.error(`Category column for status ${taskStatus} not found`);
+  }
 
   taskItem.addEventListener("dragstart", handleDragStart);
   taskItem.addEventListener("dragend", handleDragEnd);
