@@ -15,10 +15,21 @@
       margin-right: 15px;
       min-height: 200px;
       background-color: #f9f9f9;
+      flex: 1;
     }
 
     .task-item {
       cursor: move;
+    }
+
+    #taskBoard {
+      display: flex;
+      flex-wrap: wrap;
+    }
+
+    #taskBoard .category-column {
+      flex: 1;
+      margin-right: 15px;
     }
   </style>
 </head>
@@ -42,7 +53,6 @@
     </div>
   </nav>
 
-  <!-- Forms Section -->
   <div class="container mt-3">
     <form id="taskForm">
       <div class="form-group mb-3">
@@ -87,34 +97,32 @@
     </div>
   </div>
 
-  <!-- Task List Section -->
-  <section id="section1" class="mt-5 container">
-    <div class="row" id="taskBoard">
-      <div class="col-md-3 category-column" id="todo">
+  <section id="section1" class="mt-5 mb-5 container">
+    <div class="d-flex flex-row" id="taskBoard">
+      <div class="category-column" id="todo">
         <h4>To Do <button class="btn btn-sm btn-danger remove-category">X</button></h4>
         <ul class="list-group"></ul>
       </div>
-      <div class="col-md-3 category-column" id="in-progress">
+      <div class="category-column" id="in-progress">
         <h4>In Progress <button class="btn btn-sm btn-danger remove-category">X</button></h4>
         <ul class="list-group"></ul>
       </div>
-      <div class="col-md-3 category-column" id="in-review">
+      <div class="category-column" id="in-review">
         <h4>In Review <button class="btn btn-sm btn-danger remove-category">X</button></h4>
         <ul class="list-group"></ul>
       </div>
-      <div class="col-md-3 category-column" id="done">
+      <div class="category-column" id="done">
         <h4>Done <button class="btn btn-sm btn-danger remove-category">X</button></h4>
         <ul class="list-group"></ul>
       </div>
     </div>
   </section>
-  
-  <script src="js/taskManager.js"></script>
-  <script src="js/index.js"></script>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
     crossorigin="anonymous"></script>
+  <script src="js/taskManager.js"></script>
+  <script src="js/index.js"></script>
 </body>
 
 </html>
