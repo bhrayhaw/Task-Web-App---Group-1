@@ -31,6 +31,14 @@ class TaskManager {
     }
   }
 
+  updateTask(taskId, updatedTask) {
+    const task = this.tasks.find((task) => task.id === taskId);
+    if (task != -1) {
+      this.tasks[task] = updatedTask;
+      this.save();
+    }
+  }
+
   getTasks() {
     return this.tasks;
   }
