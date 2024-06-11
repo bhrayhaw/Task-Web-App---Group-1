@@ -105,8 +105,12 @@ function handleDrop(event) {
 
   if (taskItem && targetCategory) {
     const newStatus = targetCategory.id;
-    taskItem.querySelector("p strong:last-child").innerText =
-      newStatus.charAt(0).toUpperCase() + newStatus.slice(1);
+    const statusParagraph = taskItem.querySelectorAll("p")[3]; // Assuming the 4th <p> tag holds the status
+    if (statusParagraph) {
+      statusParagraph.innerHTML = `<strong>Status:</strong> ${
+        newStatus.charAt(0).toUpperCase() + newStatus.slice(1)
+      }`;
+    }
     taskItem.dataset.status = newStatus;
     targetCategory.querySelector("ul").appendChild(taskItem);
 
@@ -140,7 +144,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const addCategoryBtn = document.querySelector("#addCategoryBtn");
   const taskBoard = document.querySelector("#taskBoard");
   const saveButton = document.querySelector("#taskFormSubmitButton");
-
   form.addEventListener("submit", (event) => {
     event.preventDefault();
 
@@ -154,7 +157,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (taskName && taskDescription && taskAssignedTo && taskDueDate) {
       if (saveButton.textContent === "Update Task" && saveButton.dataset.id) {
+<<<<<<< HEAD
         const taskId = parseInt(saveButton.dataset.id);
+=======
+        const taskId = saveButton.dataset.id;
+>>>>>>> 815ed4d0a4c2ff83a8b62336e15246b558c152c7
         const updatedTask = {
           id: taskId,
           name: taskName,
@@ -164,11 +171,24 @@ document.addEventListener("DOMContentLoaded", () => {
           status: taskStatus,
         };
         taskManager.updateTask(taskId, updatedTask);
-        loadTasksToBoard(taskManager); // re-render the tasks on the board
+        // Find and update the existing task in the UI
+        const taskItem = document.getElementById(`task-${taskId}`);
+        taskItem.querySelector("h5").textContent = taskName;
+        taskItem.querySelector("p:nth-of-type(1)").textContent =
+          taskDescription;
+        taskItem.querySelector(
+          "p:nth-of-type(2)"
+        ).textContent = `Assigned To: ${taskAssignedTo}`;
+        taskItem.querySelector(
+          "p:nth-of-type(3)"
+        ).textContent = `Due Date: ${taskDueDate}`;
+        taskItem.querySelector(
+          "p:nth-of-type(4)"
+        ).textContent = `Status: ${taskStatus}`;
         saveButton.textContent = "Add Task";
         delete saveButton.dataset.id;
       } else {
-        taskManager.addTask(
+        const newTask = taskManager.addTask(
           taskName,
           taskDescription,
           taskAssignedTo,
@@ -176,12 +196,12 @@ document.addEventListener("DOMContentLoaded", () => {
           taskStatus
         );
         addTaskToBoard(
-          taskManager.currentId - 1,
-          taskName,
-          taskDescription,
-          taskAssignedTo,
-          taskDueDate,
-          taskStatus
+          newTask.id,
+          newTask.name,
+          newTask.description,
+          newTask.assignedTo,
+          newTask.dueDate,
+          newTask.status
         );
       }
       form.reset();
