@@ -171,6 +171,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
+  
   addCategoryBtn.addEventListener("click", () => {
     const categoryName = document
       .querySelector("#newCategoryInput")
