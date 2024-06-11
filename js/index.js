@@ -40,7 +40,6 @@ function addTaskToBoard(
     taskItem.remove();
   });
 
-  // new insertion - add click listener for updating task
   taskItem.querySelector(".update-task").addEventListener("click", () => {
     const task = taskManager.getTasks().find((t) => t.id === taskId);
     if (task) {
@@ -55,7 +54,6 @@ function addTaskToBoard(
       document.querySelector("#taskFormSubmitButton").dataset.id = task.id;
     }
   });
-  // end new insertion
 }
 
 function loadTasksToBoard(taskManager) {
@@ -95,8 +93,12 @@ function handleDrop(event) {
 
   if (taskItem && targetCategory) {
     const newStatus = targetCategory.id;
-    taskItem.querySelector("p strong:last-child").innerText =
-      newStatus.charAt(0).toUpperCase() + newStatus.slice(1);
+    const statusParagraph = taskItem.querySelectorAll("p")[3]; // Assuming the 4th <p> tag holds the status
+    if (statusParagraph) {
+      statusParagraph.innerHTML = `<strong>Status:</strong> ${
+        newStatus.charAt(0).toUpperCase() + newStatus.slice(1)
+      }`;
+    }
     taskItem.dataset.status = newStatus;
     targetCategory.querySelector("ul").appendChild(taskItem);
 
