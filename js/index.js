@@ -46,6 +46,9 @@ document.addEventListener("DOMContentLoaded", () => {
         taskItem.querySelector(
           "p:nth-of-type(4)"
         ).textContent = `Status: ${taskStatus}`;
+        taskItem.querySelector(
+          "p:nth-of-type(5)"
+        ).textContent = `Priority: ${taskPriority}`;
         saveButton.textContent = "Add Task";
         delete saveButton.dataset.id;
       } else {
@@ -63,7 +66,9 @@ document.addEventListener("DOMContentLoaded", () => {
           newTask.description,
           newTask.assignedTo,
           newTask.dueDate,
-          newTask.status
+          newTask.status,
+          newTask.priority,
+          newTask.isDone
         );
       }
       form.reset();
@@ -103,7 +108,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const taskId = parseInt(taskItem.id.split("-")[1]);
       const task = taskManager.getTasks().find((t) => t.id === taskId);
       if (task) {
-        task.status = "done";
+        taskManager.markTaskAsDone(taskId);
         taskManager.updateTaskStatus(taskId, "done");
         const doneCategory = document.querySelector("#done ul");
         doneCategory.appendChild(taskItem);

@@ -15,6 +15,7 @@ class TaskManager {
       dueDate,
       status,
       priority,
+      isDone: false,
     };
     this.tasks.push(task);
     this.save();
@@ -38,6 +39,14 @@ class TaskManager {
     const existingTask = this.tasks.find((task) => task.id === taskId);
     if (existingTask) {
       Object.assign(existingTask, updatedTask);
+      this.save();
+    }
+  }
+
+  markTaskAsDone(taskId) {
+    const task = this.tasks.find((task) => task.id === taskId);
+    if (task) {
+      task.isDone = true;
       this.save();
     }
   }
