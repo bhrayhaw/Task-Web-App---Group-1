@@ -1,12 +1,24 @@
 const taskManager = new TaskManager();
 
+// Function to load categories from local storage
+function loadCategoriesFromLocalStorage() {
+  const categories = JSON.parse(localStorage.getItem("categories")) || [];
+  categories.forEach((category) => addCategoryToBoard(category));
+}
+
+// Function to save categories to local storage
+function saveCategoriesToLocalStorage(categories) {
+  localStorage.setItem("categories", JSON.stringify(categories));
+}
+
 function addTaskToBoard(
   taskId,
   taskName,
   taskDescription,
   taskAssignedTo,
   taskDueDate,
-  taskStatus
+  taskStatus,
+  taskPriority
 ) {
   const taskItem = document.createElement("li");
   taskItem.className = "list-group-item task-item";
@@ -20,6 +32,7 @@ function addTaskToBoard(
     <p><strong>Status:</strong> ${
       taskStatus.charAt(0).toUpperCase() + taskStatus.slice(1)
     }</p>
+    <p><strong>Priority:</strong> ${taskPriority}</p>
     <button class="btn btn-sm btn-primary update-task">Update</button>
     <button class="btn btn-sm btn-danger remove-task">Remove</button>
   `;
@@ -40,22 +53,19 @@ function addTaskToBoard(
     taskItem.remove();
   });
 
-  // new insertion - add click listener for updating task
   taskItem.querySelector(".update-task").addEventListener("click", () => {
     const task = taskManager.getTasks().find((t) => t.id === taskId);
     if (task) {
       document.querySelector("#newTaskNameInput").value = task.name;
-      document.querySelector("#newTaskDescriptionInput").value =
-        task.description;
+      document.querySelector("#newTaskDescriptionInput").value = task.description;
       document.querySelector("#newTaskAssignedToInput").value = task.assignedTo;
       document.querySelector("#newTaskDueDateInput").value = task.dueDate;
       document.querySelector("#newTaskStatusInput").value = task.status;
-      document.querySelector("#taskFormSubmitButton").textContent =
-        "Update Task";
+      document.querySelector("#newTaskPriorityInput").value = task.priority;
+      document.querySelector("#taskFormSubmitButton").textContent = "Update Task";
       document.querySelector("#taskFormSubmitButton").dataset.id = task.id;
     }
   });
-  // end new insertion
 }
 
 function loadTasksToBoard(taskManager) {
@@ -112,6 +122,19 @@ function handleDrop(event) {
 document.addEventListener("dragover", handleDragOver);
 document.addEventListener("drop", handleDrop);
 
+function addCategoryToBoard(categoryName) {
+  const taskBoard = document.querySelector("#taskBoard");
+  const categoryColumn = document.createElement("div");
+  categoryColumn.className = "category-column";
+  categoryColumn.id = categoryName.toLowerCase().replace(/\s+/g, '-');
+  categoryColumn.innerHTML = `
+    <h3>${categoryName}</h3>
+    <button class="btn btn-sm btn-danger remove-category">X</button>
+    <ul class="list-group"></ul>
+  `;
+  taskBoard.appendChild(categoryColumn);
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.querySelector("#taskForm");
   const addCategoryBtn = document.querySelector("#addCategoryBtn");
@@ -122,18 +145,15 @@ document.addEventListener("DOMContentLoaded", () => {
     event.preventDefault();
 
     const taskName = document.querySelector("#newTaskNameInput").value.trim();
-    const taskDescription = document
-      .querySelector("#newTaskDescriptionInput")
-      .value.trim();
-    const taskAssignedTo = document
-      .querySelector("#newTaskAssignedToInput")
-      .value.trim();
+    const taskDescription = document.querySelector("#newTaskDescriptionInput").value.trim();
+    const taskAssignedTo = document.querySelector("#newTaskAssignedToInput").value.trim();
     const taskDueDate = document.querySelector("#newTaskDueDateInput").value;
     const taskStatus = document.querySelector("#newTaskStatusInput").value;
+    const taskPriority = document.querySelector("#newTaskPriorityInput").value;
+    
 
     if (taskName && taskDescription && taskAssignedTo && taskDueDate) {
       if (saveButton.textContent === "Update Task" && saveButton.dataset.id) {
-        // new insertion - handle updating the task
         const taskId = parseInt(saveButton.dataset.id);
         const updatedTask = {
           id: taskId,
@@ -147,7 +167,6 @@ document.addEventListener("DOMContentLoaded", () => {
         loadTasksToBoard(taskManager); // re-render the tasks on the board
         saveButton.textContent = "Add Task";
         delete saveButton.dataset.id;
-        // end new insertion
       } else {
         taskManager.addTask(
           taskName,
@@ -172,10 +191,12 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   addCategoryBtn.addEventListener("click", () => {
-    const categoryName = document
-      .querySelector("#newCategoryInput")
-      .value.trim();
+    const categoryName = document.querySelector("#newCategoryInput").value.trim();
     if (categoryName) {
+      const categories = JSON.parse(localStorage.getItem("categories")) || [];
+      categories.push(categoryName);
+      saveCategoriesToLocalStorage(categories);
+
       addCategoryToBoard(categoryName);
       document.querySelector("#newCategoryInput").value = "";
     }
@@ -184,9 +205,14 @@ document.addEventListener("DOMContentLoaded", () => {
   taskBoard.addEventListener("click", (event) => {
     if (event.target.classList.contains("remove-category")) {
       const categoryColumn = event.target.closest(".category-column");
+      let categories = JSON.parse(localStorage.getItem("categories")) || [];
+      categories = categories.filter(category => category.toLowerCase().replace(/\s+/g, '-') !== categoryColumn.id);
+      saveCategoriesToLocalStorage(categories);
+
       categoryColumn.remove();
     }
   });
 
   loadTasksToBoard(taskManager);
+  loadCategoriesFromLocalStorage();
 });

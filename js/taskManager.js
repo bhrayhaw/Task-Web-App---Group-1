@@ -6,7 +6,7 @@ class TaskManager {
       : currentId;
   }
 
-  addTask(name, description, assignedTo, dueDate, status = "TODO") {
+  addTask(name, description, assignedTo, dueDate, status = "TODO", priority) {
     this.tasks.push({
       id: this.currentId++,
       name,
@@ -14,6 +14,7 @@ class TaskManager {
       assignedTo,
       dueDate,
       status,
+      priority,
     });
     this.save();
   }
@@ -47,3 +48,5 @@ class TaskManager {
     localStorage.setItem("tasks", JSON.stringify(this.tasks));
   }
 }
+
+
