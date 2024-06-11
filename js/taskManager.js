@@ -6,12 +6,7 @@ class TaskManager {
       : currentId;
   }
 
-<<<<<<< HEAD
   addTask(name, description, assignedTo, dueDate, status = "TODO", priority) {
-    this.tasks.push({
-      id: this.currentId++,
-=======
-  addTask(name, description, assignedTo, dueDate, status = "TODO") {
     const task = {
       id: this.currentId++,
       name,
@@ -19,13 +14,9 @@ class TaskManager {
       assignedTo,
       dueDate,
       status,
-<<<<<<< HEAD
       priority,
-    });
-=======
     };
     this.tasks.push(task);
->>>>>>> 815ed4d0a4c2ff83a8b62336e15246b558c152c7
     this.save();
     return task;
   }
@@ -59,5 +50,3 @@ class TaskManager {
     localStorage.setItem("tasks", JSON.stringify(this.tasks));
   }
 }
-
-
