@@ -20,6 +20,7 @@ function addTaskToBoard(
     <p><strong>Status:</strong> ${
       taskStatus.charAt(0).toUpperCase() + taskStatus.slice(1)
     }</p>
+    <button class="btn btn-sm btn-primary update-task">Update</button>
     <button class="btn btn-sm btn-danger remove-task">Remove</button>
   `;
   taskItem.dataset.status = taskStatus;
@@ -38,6 +39,23 @@ function addTaskToBoard(
     taskManager.deleteTask(taskId);
     taskItem.remove();
   });
+
+  // new insertion - add click listener for updating task
+  taskItem.querySelector(".update-task").addEventListener("click", () => {
+    const task = taskManager.getTasks().find((t) => t.id === taskId);
+    if (task) {
+      document.querySelector("#newTaskNameInput").value = task.name;
+      document.querySelector("#newTaskDescriptionInput").value =
+        task.description;
+      document.querySelector("#newTaskAssignedToInput").value = task.assignedTo;
+      document.querySelector("#newTaskDueDateInput").value = task.dueDate;
+      document.querySelector("#newTaskStatusInput").value = task.status;
+      document.querySelector("#taskFormSubmitButton").textContent =
+        "Update Task";
+      document.querySelector("#taskFormSubmitButton").dataset.id = task.id;
+    }
+  });
+  // end new insertion
 }
 
 function loadTasksToBoard(taskManager) {
@@ -83,7 +101,11 @@ function handleDrop(event) {
     targetCategory.querySelector("ul").appendChild(taskItem);
 
     const taskId = parseInt(taskItemId.split("-")[1]);
-    taskManager.updateTask(taskId, newStatus);
+    const task = taskManager.getTasks().find((t) => t.id === taskId);
+    if (task) {
+      task.status = newStatus;
+      taskManager.updateTask(taskId, task); // ensure the task status is updated in TaskManager and LocalStorage
+    }
   }
 }
 
@@ -94,6 +116,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const form = document.querySelector("#taskForm");
   const addCategoryBtn = document.querySelector("#addCategoryBtn");
   const taskBoard = document.querySelector("#taskBoard");
+  const saveButton = document.querySelector("#taskFormSubmitButton");
 
   form.addEventListener("submit", (event) => {
     event.preventDefault();
@@ -109,21 +132,39 @@ document.addEventListener("DOMContentLoaded", () => {
     const taskStatus = document.querySelector("#newTaskStatusInput").value;
 
     if (taskName && taskDescription && taskAssignedTo && taskDueDate) {
-      taskManager.addTask(
-        taskName,
-        taskDescription,
-        taskAssignedTo,
-        taskDueDate,
-        taskStatus
-      );
-      addTaskToBoard(
-        taskManager.currentId - 1,
-        taskName,
-        taskDescription,
-        taskAssignedTo,
-        taskDueDate,
-        taskStatus
-      );
+      if (saveButton.textContent === "Update Task" && saveButton.dataset.id) {
+        // new insertion - handle updating the task
+        const taskId = parseInt(saveButton.dataset.id);
+        const updatedTask = {
+          id: taskId,
+          name: taskName,
+          description: taskDescription,
+          assignedTo: taskAssignedTo,
+          dueDate: taskDueDate,
+          status: taskStatus,
+        };
+        taskManager.updateTask(taskId, updatedTask);
+        loadTasksToBoard(taskManager); // re-render the tasks on the board
+        saveButton.textContent = "Add Task";
+        delete saveButton.dataset.id;
+        // end new insertion
+      } else {
+        taskManager.addTask(
+          taskName,
+          taskDescription,
+          taskAssignedTo,
+          taskDueDate,
+          taskStatus
+        );
+        addTaskToBoard(
+          taskManager.currentId - 1,
+          taskName,
+          taskDescription,
+          taskAssignedTo,
+          taskDueDate,
+          taskStatus
+        );
+      }
       form.reset();
     } else {
       console.log("Invalid Input");
