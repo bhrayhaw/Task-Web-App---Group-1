@@ -70,15 +70,24 @@
         <input type="date" class="form-control" id="newTaskDueDateInput" />
       </div>
 
-      <div class="form-group mb-3">
-        <label for="newTaskStatusInput">Status</label>
-        <select class="form-control" id="newTaskStatusInput">
-          <option value="todo">To Do</option>
-          <option value="in-progress">In Progress</option>
-          <option value="in-review">In Review</option>
-          <option value="done">Done</option>
-        </select>
-      </div>
+        <div class="form-group mb-3">
+          <label for="newTaskStatusInput">Status</label>
+          <select class="form-control" id="newTaskStatusInput">
+            <option value="todo">To Do</option>
+            <option value="in-progress">In Progress</option>
+            <option value="in-review">In Review</option>
+            <option value="done">Done</option>
+          </select>
+        </div>
+
+        <div class="form-group mb-3">
+          <label for="newTaskPriorityInput">Priority</label>
+          <select class="form-control" id="newTaskPriorityInput">
+            <option value="LOW">LOW</option>
+            <option value="MEDIUM">MEDIUM</option>
+            <option value="URGENT">URGENT</option>
+          </select>
+        </div>
 
       <button type="submit" class="btn btn-primary" id="taskFormSubmitButton">Add Task</button>
     </form>
