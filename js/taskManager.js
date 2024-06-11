@@ -6,16 +6,19 @@ class TaskManager {
       : currentId;
   }
 
-  addTask(name, description, assignedTo, dueDate, status = "TODO") {
-    this.tasks.push({
+  addTask(name, description, assignedTo, dueDate, status = "TODO", priority) {
+    const task = {
       id: this.currentId++,
       name,
       description,
       assignedTo,
       dueDate,
       status,
-    });
+      priority,
+    };
+    this.tasks.push(task);
     this.save();
+    return task;
   }
 
   deleteTask(taskId) {
@@ -32,9 +35,9 @@ class TaskManager {
   }
 
   updateTask(taskId, updatedTask) {
-    const task = this.tasks.find((task) => task.id === taskId);
-    if (task != -1) {
-      this.tasks[task] = updatedTask;
+    const existingTask = this.tasks.find((task) => task.id === taskId);
+    if (existingTask) {
+      Object.assign(existingTask, updatedTask);
       this.save();
     }
   }
