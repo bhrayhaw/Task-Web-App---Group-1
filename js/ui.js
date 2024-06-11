@@ -5,7 +5,8 @@ function addTaskToBoard(
   taskAssignedTo,
   taskDueDate,
   taskStatus,
-  taskPriority
+  taskPriority,
+  isDone
 ) {
   const taskItem = document.createElement("li");
   taskItem.className = "list-group-item task-item";
@@ -20,9 +21,15 @@ function addTaskToBoard(
       taskStatus.charAt(0).toUpperCase() + taskStatus.slice(1)
     }</p>
     <p><strong>Priority:</strong> ${taskPriority}</p>
-    <button class="btn btn-sm btn-primary update-task">Update</button>
+    <button class="btn btn-sm btn-primary update-task" ${
+      isDone ? "disabled" : ""
+    }>Update</button>
     <button class="btn btn-sm btn-danger remove-task">Remove</button>
-    <button class="btn btn-sm btn-success mark-done">Mark as Done</button>
+    ${
+      !isDone
+        ? '<button class="btn btn-sm btn-success mark-done">Mark as Done</button>'
+        : ""
+    }
   `;
   taskItem.dataset.status = taskStatus;
 
@@ -51,6 +58,7 @@ function addTaskToBoard(
       document.querySelector("#newTaskDueDateInput").value = task.dueDate;
       document.querySelector("#newTaskStatusInput").value = task.status;
       document.querySelector("#newTaskPriorityInput").value = task.priority;
+      const saveButton = document.querySelector("#taskFormSubmitButton");
       saveButton.textContent = "Update Task";
       saveButton.dataset.id = taskId;
     }
@@ -67,7 +75,8 @@ function loadTasksToBoard(taskManager) {
       task.assignedTo,
       task.dueDate,
       task.status,
-      task.priority
+      task.priority,
+      task.isDone
     );
   });
 }
@@ -75,7 +84,12 @@ function loadTasksToBoard(taskManager) {
 // Function to load categories from local storage
 function loadCategoriesFromLocalStorage() {
   const categories = JSON.parse(localStorage.getItem("categories")) || [];
-  categories.forEach((category) => addCategoryToBoard(category));
+  const defaultCategories = ["todo", "in-progress", "done"]; // Define your default categories here
+  categories.forEach((category) => {
+    if (!defaultCategories.includes(category)) {
+      addCategoryToBoard(category);
+    }
+  });
 }
 
 // Function to save categories to local storage
@@ -94,4 +108,18 @@ function addCategoryToBoard(categoryName) {
     <ul class="list-group"></ul>
   `;
   taskBoard.appendChild(categoryColumn);
+
+  const categoryTitle = categoryColumn.querySelector("h3");
+  categoryTitle.addEventListener("click", () => {
+    const newName = prompt("Enter new category name:", categoryName);
+    if (newName) {
+      categoryTitle.textContent = newName;
+      const categories = JSON.parse(localStorage.getItem("categories")) || [];
+      const index = categories.indexOf(categoryName);
+      if (index !== -1) {
+        categories[index] = newName;
+        saveCategoriesToLocalStorage(categories);
+      }
+    }
+  });
 }
