@@ -1,174 +1,135 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Tasky</title>
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
-      crossorigin="anonymous"
-    />
-    <style>
-      .category-column {
-        border: 1px solid #ddd;
-        border-radius: 5px;
-        padding: 10px;
-        margin-right: 15px;
-        min-height: 200px;
-        background-color: #f9f9f9;
-        flex: 1;
-      }
 
-      .task-item {
-        cursor: move;
-      }
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tasky</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <style>
+    .category-column {
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      padding: 10px;
+      margin-right: 15px;
+      min-height: 200px;
+      background-color: #f9f9f9;
+      flex: 1;
+    }
 
-      #taskBoard {
-        display: flex;
-        flex-wrap: wrap;
-      }
+    .task-item {
+      cursor: move;
+    }
 
-      #taskBoard .category-column {
-        flex: 1;
-        margin-right: 15px;
-      }
-    </style>
-  </head>
+    #taskBoard {
+      display: flex;
+      flex-wrap: wrap;
+    }
 
-  <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <a class="navbar-brand">Tasky</a>
-      <button
-        class="navbar-toggler"
-        type="button"
-        data-toggle="collapse"
-        data-target="#navbarNav"
-        aria-controls="navbarNav"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-      >
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav">
-          <li class="nav-item active">
-            <a class="nav-link" href="#">Home <span class="sr-only"></span></a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#section1">Task List</a>
-          </li>
-        </ul>
+    #taskBoard .category-column {
+      flex: 1;
+      margin-right: 15px;
+    }
+  </style>
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand">Tasky</a>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item active">
+          <a class="nav-link" href="#">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#section1">Task List</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="container mt-3">
+    <form id="taskForm">
+      <div class="form-group mb-3">
+        <label for="newTaskNameInput">Name</label>
+        <input type="text" class="form-control" id="newTaskNameInput" placeholder="Enter Name" />
       </div>
-    </nav>
 
-    <div class="container mt-3">
-      <form id="taskForm">
-        <div class="form-group mb-3">
-          <label for="newTaskNameInput">Name</label>
-          <input
-            type="text"
-            class="form-control"
-            id="newTaskNameInput"
-            placeholder="Enter Name"
-          />
-        </div>
+      <div class="form-group mb-3">
+        <label for="newTaskDescriptionInput">Description</label>
+        <textarea class="form-control" id="newTaskDescriptionInput" rows="3"></textarea>
+      </div>
 
-        <div class="form-group mb-3">
-          <label for="newTaskDescriptionInput">Description</label>
-          <textarea
-            class="form-control"
-            id="newTaskDescriptionInput"
-            rows="3"
-          ></textarea>
-        </div>
+      <div class="form-group mb-3">
+        <label for="newTaskAssignedToInput">Assigned To</label>
+        <input type="text" class="form-control" id="newTaskAssignedToInput" placeholder="username" />
+      </div>
 
-        <div class="form-group mb-3">
-          <label for="newTaskAssignedToInput">Assigned To</label>
-          <input
-            type="text"
-            class="form-control"
-            id="newTaskAssignedToInput"
-            placeholder="username"
-          />
-        </div>
+      <div class="form-group mb-3">
+        <label for="newTaskDueDateInput">Due Date</label>
+        <input type="date" class="form-control" id="newTaskDueDateInput" />
+      </div>
 
-        <div class="form-group mb-3">
-          <label for="newTaskDueDateInput">Due Date</label>
-          <input type="date" class="form-control" id="newTaskDueDateInput" />
-        </div>
+      <div class="form-group mb-3">
+        <label for="newTaskStatusInput">Status</label>
+        <select class="form-control" id="newTaskStatusInput">
+          <option value="todo">To Do</option>
+          <option value="in-progress">In Progress</option>
+          <option value="in-review">In Review</option>
+          <option value="done">Done</option>
+        </select>
+      </div>
 
-        <div class="form-group mb-3">
-          <label for="newTaskStatusInput">Status</label>
-          <select class="form-control" id="newTaskStatusInput">
-            <option value="todo">To Do</option>
-            <option value="in-progress">In Progress</option>
-            <option value="in-review">In Review</option>
-            <option value="done">Done</option>
-          </select>
-        </div>
+      <button type="submit" class="btn btn-primary" id="taskFormSubmitButton">Add Task</button>
+    </form>
 
-        <button type="submit" class="btn btn-primary" id="taskFormSubmitButton">
-          Add Task
-        </button>
-      </form>
+    <hr />
 
-      <hr />
+    <div class="form-group">
+      <label for="newCategoryInput">New Category</label>
+      <input type="text" class="form-control" id="newCategoryInput" placeholder="Enter Category Name" />
+      <button id="addCategoryBtn" class="btn btn-secondary mt-2">Add Category</button>
+    </div>
+  </div>
 
-      <div class="form-group">
-        <label for="newCategoryInput">New Category</label>
-        <input
-          type="text"
-          class="form-control"
-          id="newCategoryInput"
-          placeholder="Enter Category Name"
-        />
-        <button id="addCategoryBtn" class="btn btn-secondary mt-2">
-          Add Category
-        </button>
+  <section id="section1" class="mt-5 mb-5 container">
+    <div class="d-flex flex-row" id="taskBoard">
+      <div class="category-column" id="todo">
+        <h4>
+          To Do
+          <button class="btn btn-sm btn-danger remove-category">X</button>
+        </h4>
+        <ul class="list-group"></ul>
+      </div>
+      <div class="category-column" id="in-progress">
+        <h4>
+          In Progress
+          <button class="btn btn-sm btn-danger remove-category">X</button>
+        </h4>
+        <ul class="list-group"></ul>
+      </div>
+      <div class="category-column" id="in-review">
+        <h4>
+          In Review
+          <button class="btn btn-sm btn-danger remove-category">X</button>
+        </h4>
+        <ul class="list-group"></ul>
+      </div>
+      <div class="category-column" id="done">
+        <h4>
+          Done
+          <button class="btn btn-sm btn-danger remove-category">X</button>
+        </h4>
+        <ul class="list-group"></ul>
       </div>
     </div>
+  </section>
 
-    <section id="section1" class="mt-5 mb-5 container">
-      <div class="d-flex flex-row" id="taskBoard">
-        <div class="category-column" id="todo">
-          <h4>
-            To Do
-            <button class="btn btn-sm btn-danger remove-category">X</button>
-          </h4>
-          <ul class="list-group"></ul>
-        </div>
-        <div class="category-column" id="in-progress">
-          <h4>
-            In Progress
-            <button class="btn btn-sm btn-danger remove-category">X</button>
-          </h4>
-          <ul class="list-group"></ul>
-        </div>
-        <div class="category-column" id="in-review">
-          <h4>
-            In Review
-            <button class="btn btn-sm btn-danger remove-category">X</button>
-          </h4>
-          <ul class="list-group"></ul>
-        </div>
-        <div class="category-column" id="done">
-          <h4>
-            Done
-            <button class="btn btn-sm btn-danger remove-category">X</button>
-          </h4>
-          <ul class="list-group"></ul>
-        </div>
-      </div>
-    </section>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/taskManager.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/events.js"></script>
+  <script src="js/index.js"></script>
+</body>
 
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-      crossorigin="anonymous"
-    ></script>
-    <script src="js/taskManager.js"></script>
-    <script src="js/index.js"></script>
-  </body>
 </html>
