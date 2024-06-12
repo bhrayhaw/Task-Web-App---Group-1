@@ -7,28 +7,197 @@
   <title>Tasky</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
   <style>
+    body {
+      background-color: #f0f4ff;
+      font-family: 'Arial', sans-serif;
+      color: #333;
+    }
+
+    .navbar {
+      background-color: #5b67f2 !important;
+    }
+
+    .navbar-brand,
+    .nav-link {
+      color: #fff !important;
+    }
+
+    .navbar-brand {
+      font-weight: bold;
+      font-size: 1.5rem;
+    }
+
+    .form-group label {
+      font-weight: bold;
+      color: #5b67f2;
+    }
+
+    .form-control,
+    .form-select {
+      border: 1px solid #5b67f2;
+      border-radius: 10px;
+    }
+
+    .btn-primary {
+      background-color: #5b67f2;
+      border: none;
+      border-radius: 10px;
+    }
+
+    .btn-primary:hover {
+      background-color: #4a57c7;
+    }
+
+    .btn-secondary {
+      border-radius: 10px;
+    }
+
+    #taskForm button,
+    #addCategoryBtn {
+      border-radius: 10px;
+    }
+
     .category-column {
       border: 1px solid #ddd;
-      border-radius: 5px;
-      padding: 10px;
+      border-radius: 10px;
+      padding: 15px;
       margin-right: 15px;
       min-height: 200px;
-      background-color: #f9f9f9;
+      background-color: #ffffff;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
       flex: 1;
+      transition: transform 0.3s;
+    }
+
+    .category-column:hover {
+      transform: translateY(-5px);
+    }
+
+    .category-column h4 {
+      font-weight: bold;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .category-column h4.todo {
+      color: #5b67f2;
+    }
+
+    .category-column h4.in-progress {
+      color: #f0ad4e;
+    }
+
+    .category-column h4.in-review {
+      color: #5bc0de;
+    }
+
+    .category-column h4.done {
+      color: #5cb85c;
     }
 
     .task-item {
+      background-color: #eef2ff;
+      border: 1px solid #d1d9ff;
+      border-radius: 10px;
+      padding: 10px;
+      margin-bottom: 10px;
       cursor: move;
+      transition: background-color 0.3s;
+    }
+
+    .task-item:hover {
+      background-color: #d1d9ff;
     }
 
     #taskBoard {
       display: flex;
       flex-wrap: wrap;
+      gap: 20px;
+    }
+  .highlight {
+    background-color: yellow;
+    font-weight: bold;
+  }
+    .card-container {
+      background-color: #ffffff;
+      border-radius: 15px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      margin-bottom: 20px;
+      flex: 1;
+      min-width: 300px;
+      max-width: 600px;
     }
 
-    #taskBoard .category-column {
-      flex: 1;
-      margin-right: 15px;
+    .card-title {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #5b67f2;
+      margin-bottom: 20px;
+    }
+
+    .intro-card {
+      background-color: #5b67f2;
+      border-radius: 15px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      margin-bottom: 20px;
+      color: #ffffff;
+      text-align: center;
+    }
+
+    .intro-card h2 {
+      font-size: 1.8rem;
+      font-weight: bold;
+    }
+
+    .intro-card p {
+      font-size: 1rem;
+      margin-top: 10px;
+    }
+
+    .intro-card .emojis {
+      font-size: 2rem;
+      margin-top: 10px;
+    }
+
+    .remove-category {
+      background-color: transparent;
+      border: none;
+      color: #ff6b6b;
+    }
+
+    .remove-category:hover {
+      color: #ff4c4c;
+    }
+
+    .form-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+    }
+
+    .quote-container {
+      background-color: #eef2ff;
+      border-radius: 15px;
+      padding: 15px;
+      margin-top: 20px;
+      text-align: center;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .quote-text {
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: #333;
+    }
+
+    .quote-author {
+      font-size: 1rem;
+      color: #555;
+      margin-top: 10px;
     }
   </style>
 </head>
@@ -45,105 +214,162 @@
           <a class="nav-link" href="#section1">Task List</a>
         </li>
       </ul>
-      <form class="d-flex ms-auto">
-        <input id="searchInput" class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
-        <button class="btn btn-outline-success" type="button" onclick="searchTasks()">Search</button>
-      </form>
     </div>
+    <form class="d-flex" role="search" id="searchForm">
+      <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+      <button class="btn btn-outline-success" type="submit">Search</button>
+    </form>
   </nav>
 
   <div class="container mt-3">
-    <form id="taskForm">
-      <div class="form-group mb-3">
-        <label for="newTaskNameInput">Name</label>
-        <input type="text" class="form-control" id="newTaskNameInput" placeholder="Enter Name" />
-      </div>
-
-      <div class="form-group mb-3">
-        <label for="newTaskDescriptionInput">Description</label>
-        <textarea class="form-control" id="newTaskDescriptionInput" rows="3"></textarea>
-      </div>
-
-      <div class="form-group mb-3">
-        <label for="newTaskAssignedToInput">Assigned To</label>
-        <input type="text" class="form-control" id="newTaskAssignedToInput" placeholder="username" />
-      </div>
-
-      <div class="form-group mb-3">
-        <label for="newTaskDueDateInput">Due Date</label>
-        <input type="date" class="form-control" id="newTaskDueDateInput" />
-      </div>
-
-      <div class="form-group mb-3">
-        <label for="newTaskStatusInput">Status</label>
-        <select class="form-control" id="newTaskStatusInput">
-          <option value="todo">To Do</option>
-          <option value="in-progress">In Progress</option>
-          <option value="in-review">In Review</option>
-          <option value="done">Done</option>
-        </select>
-      </div>
-
-      <div class="form-group mb-3">
-        <label for="newTaskPriorityInput">Priority</label>
-        <select class="form-control" id="newTaskPriorityInput">
-          <option value="LOW">LOW</option>
-          <option value="MEDIUM">MEDIUM</option>
-          <option value="URGENT">URGENT</option>
-        </select>
-      </div>
-
-      <button type="submit" class="btn btn-primary" id="taskFormSubmitButton">Add Task</button>
-    </form>
-
-    <hr />
-
-    <div class="form-group">
-      <label for="newCategoryInput">New Category</label>
-      <input type="text" class="form-control" id="newCategoryInput" placeholder="Enter Category Name" />
-      <button id="addCategoryBtn" class="btn btn-secondary mt-2">Add Category</button>
+    <div class="intro-card">
+      <h2>Welcome to Tasky! 🌟</h2>
+      <p>Your 24-hour buddy to help you manage tasks effortlessly!</p>
+      <div class="emojis">📝💼🕒</div>
     </div>
-  </div>
 
-  <section id="section1" class="mt-5 mb-5 container">
-    <div class="d-flex flex-row" id="taskBoard">
-      <div class="category-column" id="todo">
-        <h4 class="category-name">
-          To Do
-        </h4>
-        <button class="btn btn-sm btn-danger remove-category">X</button>
-        <ul class="list-group"></ul>
-      </div>
-      <div class="category-column" id="in-progress">
-        <h4 class="category-name">
-          In Progress
-        </h4>
-        <button class="btn btn-sm btn-danger remove-category">X</button>
-        <ul class="list-group"></ul>
-      </div>
-      <div class="category-column" id="in-review">
-        <h4 class="category-name">
-          In Review
-        </h4>
-        <button class="btn btn-sm btn-danger remove-category">X</button>
-        <ul class="list-group"></ul>
-      </div>
-      <div class="category-column" id="done">
-        <h4 class="category-name">
-          Done
-        </h4>
-        <button class="btn btn-sm btn-danger remove-category">X</button>
-        <ul class="list-group"></ul>
+    <div class="form-row">
+      <div class="card-container">
+        <div class="card-title">Create New Task</div>
+        <form id="taskForm">
+          <div class="form-group mb-3">
+            <label for="newTaskNameInput">Name</label>
+            <input type="text" class="form-control" id="newTaskNameInput" placeholder="Enter Name" />
+          </div>
+
+          <div class="form-group mb-3">
+            <label for="newTaskDescriptionInput">Description</label>
+            <textarea class="form-control" id="newTaskDescriptionInput" rows="3"></textarea>
+          </div>
+
+          <div class="form-group mb-3">
+            <label for="newTaskAssignedToInput">Assigned To</label>
+            <select class="form-control" id="newTaskAssignedToInput">
+              <option value="Elijah">Elijah</option>
+              <option value="Tracy">Tracy</option>
+              <option value="Martha">Martha</option>
+              <option value="Jemimah">Jemimah</option>
+              <option value="Nana Ama">Nana Ama </option>
+            </select>
+            <!-- <input type="text" class="form-control" id="newTaskAssignedToInput" placeholder="username" /> -->
+            <label for="newTaskStatusInput">Status</label>
+
+          </div>
+
+          <div class="form-group mb-3">
+            <label for="newTaskDueDateInput">Due Date</label>
+            <input type="date" class="form-control" id="newTaskDueDateInput" />
+          </div>
+
+          <div class="form-group mb-3">
+            <label for="newTaskStatusInput">Status</label>
+            <select class="form-select" id="newTaskStatusInput">
+              <option value="todo">To Do</option>
+              <option value="in-progress">In Progress</option>
+              <option value="in-review">In Review</option>
+              <option value="done">Done</option>
+            </select>
+          </div>
+
+          <div class="form-group mb-3">
+            <label for="newTaskPriorityInput">Priority</label>
+            <select class="form-select" id="newTaskPriorityInput">
+              <option value="LOW">LOW</option>
+              <option value="MEDIUM">MEDIUM</option>
+              <option value="URGENT">URGENT</option>
+            </select>
+          </div>
+
+          <button type="submit" class="btn btn-primary" id="taskFormSubmitButton">
+            Add Task
+          </button>
+        </form>
       </div>
 
-    </div>
-  </section>
+      <div class="card-container">
+        <div class="card-title">Create New Category</div>
+        <div class="form-group" style="margin-bottom: 70px;">
+          <label for="newCategoryInput" style="margin-bottom: 40px;">New Category</label>
+          <input type="text" class="form-control" id="newCategoryInput" placeholder="Enter Category Name" />
+          <button id="addCategoryBtn" class="btn btn-secondary mt-2" style="margin-top: 10px;">Add Category</button>
+        </div>
+        <br />
+        <br />
+        <br />
+        <br />
+        <div class="quote-container" style="padding: 60px;">
+          <div class="quote-text" id="quoteText">"The only way to do great work is to love what you do."</div>
+          <div class="quote-author" id="quoteAuthor">- Steve Jobs</div>
+        </div>
+      </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="js/taskManager.js"></script>
-  <script src="js/ui.js"></script>
-  <script src="js/events.js"></script>
-  <script src="js/index.js"></script>
+      <section id="section1" class="mt-5 mb-5 container">
+        <div class="d-flex flex-row" id="taskBoard">
+          <div class="category-column" id="todo">
+            <h4 class="todo">
+              To Do
+              <button class="btn btn-sm btn-danger remove-category">X</button>
+            </h4>
+            <ul class="list-group"></ul>
+          </div>
+          <div class="category-column" id="in-progress">
+            <h4 class="in-progress">
+              In Progress
+              <button class="btn btn-sm btn-danger remove-category">X</button>
+            </h4>
+            <ul class="list-group"></ul>
+          </div>
+          <div class="category-column" id="in-review">
+            <h4 class="in-review">
+              In Review
+              <button class="btn btn-sm btn-danger remove-category">X</button>
+            </h4>
+            <ul class="list-group"></ul>
+          </div>
+          <div class="category-column" id="done">
+            <h4 class="done">
+              Done
+              <button class="btn btn-sm btn-danger remove-category">X</button>
+            </h4>
+            <ul class="list-group"></ul>
+          </div>
+        </div>
+      </section>
+
+      <script>
+        // Function to highlight search term
+          function highlight(text) {
+            const content = document.body.innerHTML;
+            const regex = new RegExp(`(${text})`, 'gi');
+            const highlightedContent = content.replace(regex, '<span class="highlight">$1</span>');
+            document.body.innerHTML = highlightedContent;
+          }
+
+          // Function to clear previous highlights
+          function clearHighlight() {
+            const highlightedElements = document.querySelectorAll('.highlight');
+            highlightedElements.forEach(el => {
+              const parent = el.parentNode;
+              parent.replaceChild(document.createTextNode(el.textContent), el);
+              parent.normalize();
+            });
+          }
+
+          // Add event listener to search form
+          document.getElementById('searchForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+            clearHighlight();
+            const searchTerm = document.getElementById('searchInput').value.trim();
+            if (searchTerm) {
+              highlight(searchTerm);
+            }
+          });
+      </script>
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="js/taskManager.js"></script>
+        <script src="js/ui.js"></script>
+        <script src="js/events.js"></script>
+        <script src="js/index.js"></script>
 </body>
 
 </html>
