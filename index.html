@@ -1,220 +1,222 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Tasky</title>
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
-    <style>
-      body {
-        background-color: #f0f4ff;
-        font-family: "Arial", sans-serif;
-        color: #333;
-      }
 
-      .navbar {
-        background-color: #5b67f2;
-      }
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tasky</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <style>
+    body {
+      background-color: #f0f4ff;
+      font-family: 'Arial', sans-serif;
+      color: #333;
+    }
 
-      .navbar-brand,
-      .nav-link {
-        color: #fff !important;
-      }
+    .navbar {
+      background-color: #5b67f2;
+    }
 
-      .navbar-brand {
-        font-weight: bold;
-        font-size: 1.5rem;
-      }
+    .navbar-brand,
+    .nav-link {
+      color: #fff !important;
+    }
 
-      .form-group label {
-        font-weight: bold;
-        color: #5b67f2;
-      }
+    .navbar-brand {
+      font-weight: bold;
+      font-size: 1.5rem;
+    }
 
-      .form-control,
-      .form-select {
-        border: 1px solid #5b67f2;
-        border-radius: 10px;
-      }
+    .form-group label {
+      font-weight: bold;
+      color: #5b67f2;
+    }
 
-      .btn-primary {
-        background-color: #5b67f2;
-        border: none;
-        border-radius: 10px;
-      }
+    .form-control,
+    .form-select {
+      border: 1px solid #5b67f2;
+      border-radius: 10px;
+    }
 
-      .btn-primary:hover {
-        background-color: #4a57c7;
-      }
+    .btn-primary {
+      background-color: #5b67f2;
+      border: none;
+      border-radius: 10px;
+    }
 
-      .btn-secondary {
-        border-radius: 10px;
-      }
+    .btn-primary:hover {
+      background-color: #4a57c7;
+    }
 
-      #taskForm button,
-      #addCategoryBtn {
-        border-radius: 10px;
-      }
+    .btn-secondary {
+      border-radius: 10px;
+    }
 
-      .category-column {
-        border: 1px solid #ddd;
-        border-radius: 10px;
-        padding: 15px;
-        margin-right: 15px;
-        min-height: 200px;
-        background-color: #ffffff;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        flex: 1;
-        transition: transform 0.3s;
-      }
+    #taskForm button,
+    #addCategoryBtn {
+      border-radius: 10px;
+    }
 
-      .category-column:hover {
-        transform: translateY(-5px);
-      }
+    .category-column {
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      padding: 15px;
+      margin-right: 15px;
+      min-height: 200px;
+      background-color: #ffffff;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      flex: 1;
+      transition: transform 0.3s;
+    }
 
-      .category-column h4 {
-        font-weight: bold;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-      }
+    .category-column:hover {
+      transform: translateY(-5px);
+    }
 
-      .category-column h4.todo {
-        color: #ff6b6b;
-      }
+    .category-column h4 {
+      font-weight: bold;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
 
-      .category-column h4.in-progress {
-        color: #f0ad4e;
-      }
+    .category-column h4.todo {
+      color: #ff6b6b;
+    }
 
-      .category-column h4.in-review {
-        color: #5bc0de;
-      }
+    .category-column h4.in-progress {
+      color: #f0ad4e;
+    }
 
-      .category-column h4.done {
-        color: #5cb85c;
-      }
+    .category-column h4.in-review {
+      color: #5bc0de;
+    }
 
-      .task-item {
-        background-color: #eef2ff;
-        border: 1px solid #d1d9ff;
-        border-radius: 10px;
-        padding: 10px;
-        margin-bottom: 10px;
-        cursor: move;
-        transition: background-color 0.3s;
-      }
+    .category-column h4.done {
+      color: #5cb85c;
+    }
 
-      .task-item:hover {
-        background-color: #d1d9ff;
-      }
+    .task-item {
+      background-color: #eef2ff;
+      border: 1px solid #d1d9ff;
+      border-radius: 10px;
+      padding: 10px;
+      margin-bottom: 10px;
+      cursor: move;
+      transition: background-color 0.3s;
+    }
 
-      #taskBoard {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 20px;
-      }
+    .task-item:hover {
+      background-color: #d1d9ff;
+    }
 
-      .card-container {
-        background-color: #ffffff;
-        border-radius: 15px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        padding: 20px;
-        margin-bottom: 20px;
-        flex: 1;
-        min-width: 300px;
-        max-width: 600px;
-      }
+    #taskBoard {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
 
-      .card-title {
-        font-size: 1.5rem;
-        font-weight: bold;
-        color: #5b67f2;
-        margin-bottom: 20px;
-      }
+    .card-container {
+      background-color: #ffffff;
+      border-radius: 15px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      margin-bottom: 20px;
+      flex: 1;
+      min-width: 300px;
+      max-width: 600px;
+    }
 
-      .intro-card {
-        background-color: #5b67f2;
-        border-radius: 15px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        padding: 20px;
-        margin-bottom: 20px;
-        color: #ffffff;
-        text-align: center;
-      }
+    .card-title {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #c7279d;
+      margin-bottom: 20px;
+    }
 
-      .intro-card h2 {
-        font-size: 1.8rem;
-        font-weight: bold;
-      }
+    .intro-card {
+      background-color: #c7279d;
+      border-radius: 15px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      margin-bottom: 20px;
+      color: #ffffff;
+      text-align: center;
+    }
 
-      .intro-card p {
-        font-size: 1rem;
-        margin-top: 10px;
-      }
+    .intro-card h2 {
+      font-size: 1.8rem;
+      font-weight: bold;
+    }
 
-      .intro-card .emojis {
-        font-size: 2rem;
-        margin-top: 10px;
-      }
+    .intro-card p {
+      font-size: 1rem;
+      margin-top: 10px;
+    }
 
-      .remove-category {
-        background-color: transparent;
-        border: none;
-        color: #ff6b6b;
-      }
+    .intro-card .emojis {
+      font-size: 2rem;
+      margin-top: 10px;
+    }
 
-      .remove-category:hover {
-        color: #ff4c4c;
-      }
+    .remove-category {
+      background-color: transparent;
+      border: none;
+      color: #ff6b6b;
+    }
 
-      .form-row {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 20px;
-        justify-content: center;
-      }
+    .remove-category:hover {
+      color: #ff4c4c;
+    }
 
-      .quote-container {
-        background-color: #eef2ff;
-        border-radius: 15px;
-        padding: 15px;
-        margin-top: 20px;
-        text-align: center;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      }
+    .form-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+    }
 
-      .quote-text {
-        font-size: 1.2rem;
-        font-weight: bold;
-        color: #333;
-      }
+    .quote-container {
+      background-color: #eef2ff;
+      border-radius: 15px;
+      padding: 15px;
+      margin-top: 20px;
+      text-align: center;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
 
-      .quote-author {
-        font-size: 1rem;
-        color: #555;
-        margin-top: 10px;
-      }
-    </style>
-  </head>
+    .quote-text {
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: #333;
+    }
 
-  <body>
-    <nav class="navbar navbar-expand-lg navbar-light">
-      <a class="navbar-brand">Tasky</a>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav">
-          <li class="nav-item active">
-            <a class="nav-link" href="#">Home</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#section1">Task List</a>
-          </li>
-        </ul>
-      </div>
-    </nav>
+    .quote-author {
+      font-size: 1rem;
+      color: #555;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand">Tasky</a>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item active">
+          <a class="nav-link" href="#">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#section1">Task List</a>
+        </li>
+      </ul>
+    </div>
+    <form class="d-flex" role="search">
+      <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+      <button class="btn btn-outline-success" type="submit" >Search</button>
+    </form>
+  </nav>
 
     <div class="container mt-3">
       <div class="intro-card">
@@ -237,14 +239,10 @@
               />
             </div>
 
-            <div class="form-group mb-3">
-              <label for="newTaskDescriptionInput">Description</label>
-              <textarea
-                class="form-control"
-                id="newTaskDescriptionInput"
-                rows="3"
-              ></textarea>
-            </div>
+      <div class="form-group mb-3">
+        <label for="newTaskDescriptionInput">Description</label>
+        <textarea class="form-control" id="newTaskDescriptionInput" rows="3"></textarea>
+      </div>
 
             <div class="form-group mb-3">
               <label for="newTaskAssignedToInput">Assigned To</label>
@@ -255,6 +253,19 @@
                 placeholder="username"
               />
             </div>
+      <div class="form-group mb-3">
+        <label for="newTaskAssignedToInput">Assigned To</label>
+        <select class="form-control" id="newTaskAssignedToInput">
+            <option value="Elijah">Elijah</option>
+            <option value="Tracy">Tracy</option>
+            <option value="Martha">Martha</option>
+            <option value="Jemimah">Jemimah</option>
+            <option value="Nana Ama">Nana Ama </option>
+          </select>
+        <!-- <input type="text" class="form-control" id="newTaskAssignedToInput" placeholder="username" /> -->
+        <label for="newTaskStatusInput">Status</label>
+          
+      </div>
 
             <div class="form-group mb-3">
               <label for="newTaskDueDateInput">Due Date</label>
