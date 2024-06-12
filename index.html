@@ -35,16 +35,20 @@
 
 <body>
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand">Tasky</a>
+    <a class="navbar-brand" href="https://hubtel.com/">Tasky</a>
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav">
         <li class="nav-item active">
-          <a class="nav-link" href="#">Home</a>
+          <a class="nav-link" href="https://hubtel.com/">Home</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="#section1">Task List</a>
         </li>
       </ul>
+      <form class="d-flex ms-auto">
+        <input id="searchInput" class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
+        <button class="btn btn-outline-success" type="button" onclick="searchTasks()">Search</button>
+      </form>
     </div>
   </nav>
 
@@ -70,24 +74,24 @@
         <input type="date" class="form-control" id="newTaskDueDateInput" />
       </div>
 
-        <div class="form-group mb-3">
-          <label for="newTaskStatusInput">Status</label>
-          <select class="form-control" id="newTaskStatusInput">
-            <option value="todo">To Do</option>
-            <option value="in-progress">In Progress</option>
-            <option value="in-review">In Review</option>
-            <option value="done">Done</option>
-          </select>
-        </div>
+      <div class="form-group mb-3">
+        <label for="newTaskStatusInput">Status</label>
+        <select class="form-control" id="newTaskStatusInput">
+          <option value="todo">To Do</option>
+          <option value="in-progress">In Progress</option>
+          <option value="in-review">In Review</option>
+          <option value="done">Done</option>
+        </select>
+      </div>
 
-        <div class="form-group mb-3">
-          <label for="newTaskPriorityInput">Priority</label>
-          <select class="form-control" id="newTaskPriorityInput">
-            <option value="LOW">LOW</option>
-            <option value="MEDIUM">MEDIUM</option>
-            <option value="URGENT">URGENT</option>
-          </select>
-        </div>
+      <div class="form-group mb-3">
+        <label for="newTaskPriorityInput">Priority</label>
+        <select class="form-control" id="newTaskPriorityInput">
+          <option value="LOW">LOW</option>
+          <option value="MEDIUM">MEDIUM</option>
+          <option value="URGENT">URGENT</option>
+        </select>
+      </div>
 
       <button type="submit" class="btn btn-primary" id="taskFormSubmitButton">Add Task</button>
     </form>
@@ -104,33 +108,34 @@
   <section id="section1" class="mt-5 mb-5 container">
     <div class="d-flex flex-row" id="taskBoard">
       <div class="category-column" id="todo">
-        <h4>
+        <h4 class="category-name">
           To Do
-          <button class="btn btn-sm btn-danger remove-category">X</button>
         </h4>
+        <button class="btn btn-sm btn-danger remove-category">X</button>
         <ul class="list-group"></ul>
       </div>
       <div class="category-column" id="in-progress">
-        <h4>
+        <h4 class="category-name">
           In Progress
-          <button class="btn btn-sm btn-danger remove-category">X</button>
         </h4>
+        <button class="btn btn-sm btn-danger remove-category">X</button>
         <ul class="list-group"></ul>
       </div>
       <div class="category-column" id="in-review">
-        <h4>
+        <h4 class="category-name">
           In Review
-          <button class="btn btn-sm btn-danger remove-category">X</button>
         </h4>
+        <button class="btn btn-sm btn-danger remove-category">X</button>
         <ul class="list-group"></ul>
       </div>
       <div class="category-column" id="done">
-        <h4>
+        <h4 class="category-name">
           Done
-          <button class="btn btn-sm btn-danger remove-category">X</button>
         </h4>
+        <button class="btn btn-sm btn-danger remove-category">X</button>
         <ul class="list-group"></ul>
       </div>
+
     </div>
   </section>
 
